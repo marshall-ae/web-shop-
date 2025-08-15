@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katalog - Ink Fusion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <img src="logo.png" alt="Ink Fusion">
+    </div>
+    <nav class="nav">
+      <a href="index.html">Hlavní stránka</a>
+      <a href="tshirts.html">Trička</a>
+      <a href="hoodies.html">Mikiny s kapucí</a>
+      <a href="konstruktor.html">Vytvořit potisk</a>
+      <a href="kosik.html">Košík</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Naše Produkty</h1>
+    <p>Vyber si svůj styl</p>
+  </section>
+
+  <section class="products">
+    <h2>Trička a Mikiny</h2>
+    <div class="product-list">
+      <div class="product-card">
+        <img src="/images/tshirt1.jpg" alt="Tričko Classic">
+        <h3>Tričko Classic</h3>
+        <p class="price">500 Kč</p>
+        <button class="btn">Přidat do košíku</button>
+      </div>
+      <div class="product-card">
+        <img src="hoodie1.jpg" alt="Mikina Fusion">
+        <h3>Mikina Fusion</h3>
+        <p class="price">750 Kč</p>
+        <button class="btn" onclick="addToCart(2)">Přidat do košíku</button>
+      </div>
+      <div class="product-card">
+        <img src="cap1.jpg" alt="Kšiltovka Logo">
+        <h3>Kšiltovka Logo</h3>
+        <p class="price">300 Kč</p>
+        <button class="btn" onclick="addToCart(3)">Přidat do košíku</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    &copy; 2025 Ink Fusion. Všechna práva vyhrazena.
+  </footer>
+
+  <script src="cart.js"></script>
+</body>
+</html>

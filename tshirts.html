@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ink Fusion - Trička</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    .catalog {
+      padding: 50px 0;
+    }
+    
+    .catalog-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .product-card {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .product-image {
+      height: 320px;
+      overflow: hidden;
+    }
+    
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .product-image img {
+      transform: scale(1.05);
+    }
+    
+    .product-info {
+      padding: 20px;
+      background-color: #fff;
+    }
+    
+    .product-name {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    
+    .product-desc {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    
+    .product-price {
+      font-weight: 700;
+      font-size: 20px;
+      color: #333;
+    }
+    
+    .product-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border: none;
+      border-radius: 4px;
+      margin-top: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .product-button:hover {
+      background-color: #555;
+    }
+    
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+      
+      .catalog-title {
+        font-size: 28px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .product-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 90%;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 30px;
+      background: #fff;
+      border-radius: 12px;
+      display: flex;
+      gap: 30px;
+    }
+
+    .modal-gallery {
+      flex: 1;
+    }
+
+    .modal-info {
+      flex: 1;
+    }
+
+    .modal-close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    .size-selector {
+      margin: 20px 0;
+    }
+
+    .size-options {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .size-option {
+      width: 45px;
+      height: 45px;
+      border: 2px solid #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .size-option.active {
+      border-color: #2196f3;
+      background: #2196f3;
+      color: white;
+    }
+
+    .size-select {
+      width: 100%;
+      padding: 8px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+      gap: 15px;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .cart-details {
+      flex: 1;
+    }
+
+    .remove-btn {
+      background-color: #ff4444;
+      color: white;
+    }
+
+    .remove-btn:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Ink Fusion logo">
+        </a>
+      </div>
+      <nav class="nav">
+        <div class="burger-icon" id="burger-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="nav-container" id="nav-container">
+          <div class="dropdown">
+            <div class="dropbtn" id="produkty-btn">Produkty <span class="arrow">▼</span></div>
+            <div class="dropdown-content" id="produkty-dropdown">
+              <a href="tshirts.html">Trička</a>
+              <a href="hoodies.html">Mikiny s kapucí</a>
+            </div>
+          </div>
+          <a href="konstruktor.html">Vytvořit potisk</a>
+          <a href="kosik.html">Košík</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Catalog Section -->
+  <section class="catalog">
+    <h2 class="catalog-title">Trička</h2>
+    <div class="products-grid">
+      <!-- Product 1 -->
+      <div class="product-card" data-id="1">
+        <div class="product-image">
+          <img src="images/tshirt1.jpg" alt="Základní bílé tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Základní bílé tričko</h3>
+          <p class="product-desc">Klasické bavlněné tričko s kulatým výstřihem</p>
+          <p class="product-price">550 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="
+              let size = this.parentElement.querySelector('.size-select').value;
+              if (size) {
+                  addToCart({
+                      id: 1,
+                      name: 'Základní bílé tričko',
+                      price: 550,
+                      size: size,
+                      image: 'images/tshirt1.jpg'
+                  });
+              } else {
+                  showTempMessage('Vyberte prosím velikost');
+              }
+          ">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 2 -->
+      <div class="product-card" data-id="2">
+        <div class="product-image">
+          <img src="images/tshirt2.jpg" alt="Prémiové černé tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Prémiové černé tričko</h3>
+          <p class="product-desc">Vysoce kvalitní tričko z organické bavlny s elegantním vzhledem</p>
+          <p class="product-price"> 550 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="addToCart({
+            id: 2,
+            name: 'Prémiové černé tričko',
+            price: 550,
+            size: this.parentElement.querySelector('.size-select').value,
+            image: 'images/tshirt2.jpg'
+          })">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 3 -->
+      <div class="product-card" data-id="3">
+        <div class="product-image">
+          <img src="images/tshirt3.jpg" alt="Sportovní tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Sportovní tričko</h3>
+          <p class="product-desc">Funkční tričko z prodyšného materiálu pro sportovní aktivity</p>
+          <p class="product-price">550 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="addToCart({
+            id: 3,
+            name: 'Sportovní tričko',
+            price: 550,
+            size: this.parentElement.querySelector('.size-select').value,
+            image: 'images/tshirt3.jpg'
+          })">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 4 -->
+      <div class="product-card" data-id="4">
+        <div class="product-image">
+          <img src="images/tshirt4.jpg" alt="Tričko s dlouhým rukávem">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Tričko s dlouhým rukávem</h3>
+          <p class="product-desc">Pohodlné tričko s dlouhým rukávem pro chladnější dny</p>
+          <p class="product-price">549 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="addToCart({
+            id: 4,
+            name: 'Tričko s dlouhým rukávem',
+            price: 549,
+            size: this.parentElement.querySelector('.size-select').value,
+            image: 'images/tshirt4.jpg'
+          })">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 5 -->
+      <div class="product-card" data-id="5">
+        <div class="product-image">
+          <img src="images/tshirt5.jpg" alt="Dámské tričko slim fit">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Dámské tričko slim fit</h3>
+          <p class="product-desc">Elegantní přiléhavé tričko speciálně navržené pro dámskou postavu</p>
+          <p class="product-price">429 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="addToCart({
+            id: 5,
+            name: 'Dámské tričko slim fit',
+            price: 429,
+            size: this.parentElement.querySelector('.size-select').value,
+            image: 'images/tshirt5.jpg'
+          })">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 6 -->
+      <div class="product-card" data-id="6">
+        <div class="product-image">
+          <img src="images/tshirt6.jpg" alt="Pánské polo tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Pánské polo tričko</h3>
+          <p class="product-desc">Klasické polo tričko pro elegantní casual vzhled</p>
+          <p class="product-price">599 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="addToCart({
+            id: 6,
+            name: 'Pánské polo tričko',
+            price: 599,
+            size: this.parentElement.querySelector('.size-select').value,
+            image: 'images/tshirt6.jpg'
+          })">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 7 -->
+      <div class="product-card" data-id="7">
+        <div class="product-image">
+          <img src="images/tshirt7.jpg" alt="Oversize tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Oversize tričko</h3>
+          <p class="product-desc">Moderní volný střih pro pohodlí a stylový street look</p>
+          <p class="product-price">479 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="addToCart({
+            id: 7,
+            name: 'Oversize tričko',
+            price: 479,
+            size: this.parentElement.querySelector('.size-select').value,
+            image: 'images/tshirt7.jpg'
+          })">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 8 -->
+      <div class="product-card" data-id="8">
+        <div class="product-image">
+          <img src="images/tshirt8.jpg" alt="Barevné tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Barevné tričko</h3>
+          <p class="product-desc">Tričko v živých barvách pro výrazný a originální styl</p>
+          <p class="product-price">419 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="
+              let size = this.parentElement.querySelector('.size-select').value;
+              if (size) {
+                  addToCart({
+                      id: 8,
+                      name: 'Barevné tričko',
+                      price: 419,
+                      size: size,
+                      image: 'images/tshirt8.jpg'
+                  });
+              } else {
+                  showTempMessage('Vyberte prosím velikost');
+              }
+          ">Přidat do košíku</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Modal -->
+  <div id="productModal" class="product-modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div class="modal-gallery">
+        <img src="" alt="" id="modalImage" style="width: 100%;">
+        <div class="modal-thumbnails"></div>
+      </div>
+      <div class="modal-info">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDescription"></p>
+        <p class="price" id="modalPrice"></p>
+        <div class="size-selector">
+          <h3>Velikost:</h3>
+          <div class="size-options" id="sizeOptions"></div>
+        </div>
+        <button class="btn" onclick="addToCartFromModal()">Přidat do košíku</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Ink Fusion. Všechna práva vyhrazena.</p>
+    </div>
+  </footer>
+  
+  <script src="script.js"></script>
+  <script src="menu.js"></script>
+  <script src="products.js"></script>
+  <script src="modal.js"></script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html> 
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vytvořit vlastní design - Ink Fusion</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Constructor specific button */
+    .constructor-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #2196f3;
+      color: #fff;
+      text-align: center;
+      border: none;
+      border-radius: 4px;
+      margin-top: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .constructor-button:hover {
+      background-color: #1976d2;
+    }
+
+    .designer-wrapper {
+      display: flex;
+      gap: 2rem;
+      padding: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tshirt-view-container {
+      flex: 1;
+      min-width: 300px;
+      max-width: 400px;
+      aspect-ratio: 4/5;
+      background: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .controls-container {
+      flex: 1;
+      min-width: 250px;
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .tshirt-preview {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .tshirt-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .print-container {
+      position: absolute;
+      width: 80%;
+      height: 80%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 10px;
+    }
+
+    .color-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #666;
+    }
+
+    .color-option.white {
+      background-color: #fff;
+    }
+
+    .color-option.black {
+      background-color: #000;
+    }
+
+    .color-option.active {
+      border: 2px solid #ff4081;
+    }
+
+    .control-group {
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .btn {
+      background-color: #e0e0e0;
+      color: #333;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .btn.active {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    select, input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-top: 5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .price {
+      font-size: 24px;
+      color: #333;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .size-control {
+      margin-top: 15px;
+      padding: 10px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .size-control input[type="range"] {
+      width: 100%;
+      margin: 10px 0;
+    }
+
+    #printSizeValue {
+      color: #333;
+      font-weight: 500;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Ink Fusion logo">
+        </a>
+      </div>
+      <nav class="nav">
+        <div class="burger-icon" id="burger-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="nav-container" id="nav-container">
+          <div class="dropdown">
+            <div class="dropbtn" id="produkty-btn">Produkty <span class="arrow">▼</span></div>
+            <div class="dropdown-content" id="produkty-dropdown">
+              <a href="tshirts.html">Trička</a>
+              <a href="hoodies.html">Mikiny</a>
+            </div>
+          </div>
+          <a href="konstruktor.html">Vytvořit potisk</a>
+          <a href="kosik.html">Košík</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Constructor Section -->
+  <main class="constructor-container">
+    <h1>Vytvořte si vlastní design trička</h1>
+    <div class="designer-wrapper">
+      <div class="tshirt-view-container">
+        <div class="tshirt-preview" id="tshirtPreview">
+          <!-- White T-shirt views -->
+          <img src="images/tshirt-front-white.jpg" alt="Přední část bílého trička" id="tshirtFrontWhite" class="tshirt-image">
+          <img src="images/tshirt-back-white.jpg" alt="Zadní část bílého trička" id="tshirtBackWhite" class="tshirt-image hidden">
+          
+          <!-- Black T-shirt views -->
+          <img src="images/tshirt-front-black.jpg" alt="Přední část černého trička" id="tshirtFrontBlack" class="tshirt-image hidden">
+          <img src="images/tshirt-back-black.jpg" alt="Zadní část černého trička" id="tshirtBackBlack" class="tshirt-image hidden">
+          
+          <!-- Print containers -->
+          <div id="printContainerFront" class="print-container"></div>
+          <div id="printContainerBack" class="print-container hidden"></div>
+        </div>
+      </div>
+
+      <div class="controls-container">
+        <!-- View switching -->
+        <div class="control-group">
+          <button id="btnFront" class="btn active">Přední strana</button>
+          <button id="btnBack" class="btn">Zadní strana</button>
+        </div>
+        
+        <!-- Color selection -->
+        <div class="control-group">
+          <label>Barva trička:</label>
+          <div class="color-options">
+            <div class="color-option white active" id="colorWhite"></div>
+            <div class="color-option black" id="colorBlack"></div>
+          </div>
+        </div>
+        
+        <!-- Image upload -->
+        <div class="control-group">
+          <label for="uploadImage">Nahrát obrázek:</label>
+          <input type="file" id="uploadImage" accept="image/*">
+          
+          <!-- Додаємо повзунок для розміру -->
+          <div class="size-control hidden" id="printSizeControl">
+            <label for="printSize">Velikost potisku:</label>
+            <input type="range" id="printSize" min="50" max="300" value="100">
+            <span id="printSizeValue">100px</span>
+          </div>
+        </div>
+        
+        <!-- Size selection -->
+        <div class="control-group">
+          <label for="size">Velikost:</label>
+          <select id="size">
+            <option value="S">S</option>
+            <option value="M" selected>M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+        </div>
+        
+        <!-- Price and add to cart -->
+        <div class="summary">
+          <p class="price">400 Kč</p>
+          <button id="addToCartBtn" class="constructor-button" onclick="
+              let size = document.getElementById('size').value;
+              if (size) {
+                  addToCart({
+                      id: 'custom-' + Date.now(),
+                      name: 'Vlastní design',
+                      price: parseInt(document.querySelector('.price').textContent),
+                      size: size,
+                      image: currentColor === 'white' ? 'images/tshirt-front-white.jpg' : 'images/tshirt-front-black.jpg',
+                      type: 'custom'
+                  });
+              } else {
+                  showTempMessage('Vyberte prosím velikost');
+              }
+          ">Přidat do košíku</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas Wrapper -->
+    <div id="canvas-wrapper">
+      <canvas></canvas>
+    </div>
+
+    <button onclick="savePrintImage()">Save Print</button>
+  </main>
+
+  <!-- Success popup -->
+  <div id="successPopup" class="popup hidden">
+    <p>Produkt byl přidán do košíku!</p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="images/logo.png" alt="Ink Fusion logo" height="40">
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Hlavní stránka</a>
+          <a href="tshirts.html">Trička</a>
+          <a href="hoodies.html">Mikiny</a>
+          <a href="konstruktor.html">Vytvořit potisk</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 Ink Fusion. Všechna práva vyhrazena.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+
+</body>
+</html>
+
+

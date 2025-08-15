@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dokončení objednávky - Ink Fusion</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .checkout-container {
+      display: flex;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .checkout-form {
+      flex: 1;
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .order-sidebar {
+      width: 400px;
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+      align-self: flex-start;
+      position: sticky;
+      top: 2rem;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-totals {
+      margin-top: 1.5rem;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+    }
+
+    .grand-total {
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-top: 2px solid #eee;
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      border-color: #2196f3;
+      outline: none;
+    }
+
+    .delivery-options {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .delivery-option {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .delivery-option.selected {
+      border-color: #2196f3;
+      background: #f8f9fa;
+    }
+
+    .delivery-option input[type="radio"] {
+      margin: 0;
+    }
+
+    .cart-container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .cart-container h2 {
+      margin-bottom: 1rem;
+    }
+
+    .cart-summary {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-summary .total {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .btn {
+      padding: 0.8rem 1.5rem;
+      background-color: #2196f3;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn:hover {
+      background-color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Ink Fusion logo">
+        </a>
+      </div>
+      <nav class="nav">
+        <div class="burger-icon" id="burger-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="nav-container" id="nav-container">
+          <div class="dropdown">
+            <div class="dropbtn" id="produkty-btn">Produkty <span class="arrow">▼</span></div>
+            <div class="dropdown-content" id="produkty-dropdown">
+              <a href="tshirts.html">Trička</a>
+              <a href="hoodies.html">Mikiny</a>
+            </div>
+          </div>
+          <a href="konstruktor.html">Vytvořit potisk</a>
+          <a href="kosik.html">Košík</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+ 
+
+  <!-- Checkout Section -->
+  <main class="checkout-container">
+    <!-- Form First -->
+    <form class="checkout-form" id="orderForm" onsubmit="return submitOrder(event)">
+      <h1>Dokončení objednávky</h1>
+      
+      <div class="form-group">
+        <label for="name">Jméno a příjmení *</label>
+        <input type="text" class="form-control" id="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Telefon *</label>
+        <input type="tel" class="form-control" id="phone" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-mail *</label>
+        <input type="email" class="form-control" id="email" required>
+      </div>
+
+      <div class="form-group">
+        <label>Způsob dopravy *</label>
+        <div class="delivery-options">
+          <label class="delivery-option" onclick="selectDelivery(this, 99)">
+            <input type="radio" name="delivery" value="ceska_posta" required>
+            <div>
+              <strong>Česká Pošta</strong>
+              <p>Doručení na pobočku (99 Kč)</p>
+            </div>
+          </label>
+          <label class="delivery-option" onclick="selectDelivery(this, 119)">
+            <input type="radio" name="delivery" value="ppl">
+            <div>
+              <strong>PPL</strong>
+              <p>Doručení na adresu (119 Kč)</p>
+            </div>
+          </label>
+           <label class="delivery-option" onclick="selectDelivery(this, 0)">
+            <input type="radio" name="delivery" value="osobni_odber">
+            <div>
+              <strong>Osobní odběr - Praha</strong>
+              <p>Osobní odběr v Praze (Zdarma)</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Adresa doručení *</label>
+        <textarea class="form-control" id="address" rows="3" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="note">Komentář k objednávce</label>
+        <textarea class="form-control" id="note" rows="2"></textarea>
+      </div>
+
+      <button type="submit" class="btn">Potvrdit objednávku</button>
+    </form>
+
+    <!-- Order Summary After -->
+    <aside class="order-sidebar">
+      <h2>Vaše objednávka</h2>
+      <div id="orderItems">
+        <!-- Товари будуть відображені тут -->
+      </div>
+      <div class="cart-totals">
+        <div class="total-row">
+          <span>Zboží:</span>
+          <span id="subtotal">0 Kč</span>
+        </div>
+        <div class="total-row">
+          <span>Doprava:</span>
+          <span id="shipping">0 Kč</span>
+        </div>
+        <div class="total-row grand-total">
+          <span>Celkem k zaplacení:</span>
+          <span id="totalPrice">0 Kč</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="images/logo.png" alt="Ink Fusion logo" height="40">
+        </div>
+        <div class="footer-links">
+          <a href="index.html">Hlavní stránka</a>
+          <a href="tshirts.html">Trička</a>
+          <a href="hoodies.html">Mikiny</a>
+          <a href="konstruktor.html">Vytvořit potisk</a>
+        </div>
+        <div class="footer-info">
+          <p>&copy; 2025 Ink Fusion. Všechna práva vyhrazena.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        renderOrderSummary();
+    });
+  </script>
+
+</body>
+</html>

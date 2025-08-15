@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ink Fusion - Mikiny s kapucí</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    .catalog {
+      padding: 50px 0;
+    }
+    
+    .catalog-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 32px;
+      font-weight: 700;
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .product-card {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .product-image {
+      height: 320px;
+      overflow: hidden;
+    }
+    
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .product-image img {
+      transform: scale(1.05);
+    }
+    
+    .product-info {
+      padding: 20px;
+      background-color: #fff;
+    }
+    
+    .product-name {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    
+    .product-desc {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    
+    .product-price {
+      font-weight: 700;
+      font-size: 20px;
+      color: #333;
+    }
+    
+    .product-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border: none;
+      border-radius: 4px;
+      margin-top: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .product-button:hover {
+      background-color: #555;
+    }
+    
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+      
+      .catalog-title {
+        font-size: 28px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Ink Fusion logo">
+        </a>
+      </div>
+      <nav class="nav">
+        <div class="burger-icon" id="burger-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="nav-container" id="nav-container">
+          <div class="dropdown">
+            <div class="dropbtn" id="produkty-btn">Produkty <span class="arrow">▼</span></div>
+            <div class="dropdown-content" id="produkty-dropdown">
+              <a href="tshirts.html">Trička</a>
+              <a href="hoodies.html">Mikiny s kapucí</a>
+            </div>
+          </div>
+          <a href="konstruktor.html">Vytvořit potisk</a>
+          <a href="kosik.html">Košík</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Catalog Section -->
+  <section class="catalog">
+    <h2 class="catalog-title">Mikiny s kapucí</h2>
+    <div class="products-grid">
+      <!-- Product 1 -->
+      <div class="product-card" data-id="101">
+        <div class="product-image">
+          <img src="images/hoodie1.jpg" alt="Základní černá mikina s kapucí">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Základní černá mikina s kapucí</h3>
+          <p class="product-desc">Pohodlná unisex mikina z prémiové bavlny, ideální pro vlastní potisk</p>
+          <p class="product-price">799 Kč</p>
+          <button class="product-button">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 2 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="images/hoodie2.jpg" alt="Sportovní mikina s kapucí">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Sportovní mikina s kapucí</h3>
+          <p class="product-desc">Lehká mikina z technického materiálu, vhodná pro sportovní aktivity</p>
+          <p class="product-price">899 Kč</p>
+          <button class="product-button">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 3 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="images/hoodie3.jpg" alt="Prémiová mikina s kapucí">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Prémiová mikina s kapucí</h3>
+          <p class="product-desc">Luxusní mikina z organické bavlny, dokonalá pro každodenní nošení</p>
+          <p class="product-price">1299 Kč</p>
+          <button class="product-button">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 4 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="/images/hoodie4.jpg" alt="Zateplená mikina s kapucí">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Zateplená mikina s kapucí</h3>
+          <p class="product-desc">Teplá mikina s fleecovou podšívkou, perfektní pro chladnější dny</p>
+          <p class="product-price">1099 Kč</p>
+          <button class="product-button">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 5 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="/images/hoodie5.jpg" alt="Oversize mikina s kapucí">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Oversize mikina s kapucí</h3>
+          <p class="product-desc">Moderní volný střih pro maximální pohodlí a stylový vzhled</p>
+          <p class="product-price">999 Kč</p>
+          <button class="product-button">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 6 -->
+      <div class="product-card">
+        <div class="product-image">
+          <img src="/images/hoodie6.jpg" alt="Barevná mikina s kapucí">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Barevná mikina s kapucí</h3>
+          <p class="product-desc">Výrazná mikina v živých barvách pro originální vzhled</p>
+          <p class="product-price">849 Kč</p>
+          <button class="product-button">Přidat do košíku</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Ink Fusion. Všechna práva vyhrazena.</p>
+    </div>
+  </footer>
+  
+  <script src="script.js"></script>
+  <script src="menu.js"></script>
+</body>
+</html>

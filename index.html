@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ink Fusion - Úvodní stránka</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    .hero-button {
+      margin-top: 2rem;
+    }
+
+    .featured-products {
+      padding: 4rem 2rem;
+      background: #fff;
+    }
+
+    .featured-products h2 {
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #333;
+    }
+
+    .products-grid {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .product-card {
+      width: 450px;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      background: #fff;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .product-name {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .product-price {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .product-button {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #2196f3;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+
+    .product-button:hover {
+      background-color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo.png" alt="Ink Fusion logo">
+        </a>
+      </div>
+      <nav class="nav">
+        <div class="burger-icon" id="burger-icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="nav-container" id="nav-container">
+          <div class="dropdown">
+            <div class="dropbtn" id="produkty-btn">Produkty <span class="arrow">▼</span></div>
+            <div class="dropdown-content" id="produkty-dropdown">
+              <a href="tshirts.html">Trička</a>
+              <a href="hoodies.html">Mikiny s kapucí</a>
+            </div>
+          </div>
+          <a href="konstruktor.html">Vytvořit potisk</a>
+          <a href="kosik.html">Košík</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="main">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Vyjádřete se vlastním designem</h1>
+        <p>Originální potisky na trička, mikiny, hrnky a další. Vytvořte si svůj styl!</p>
+        <div class="hero-button">
+          <a href="konstruktor.html" class="btn">Vytvořit potisk</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products">
+      <h2>Naše produkty</h2>
+      <div class="products-grid">
+        <!-- Product cards here -->
+         <section class="catalog">
+    <h2 class="catalog-title">Trička</h2>
+    <div class="products-grid">
+      <!-- Product 1 -->
+      <div class="product-card" data-id="1">
+        <div class="product-image">
+          <img src="images/tshirt1.jpg" alt="Základní bílé tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Základní bílé tričko</h3>
+          <p class="product-desc">Klasické bavlněné tričko s kulatým výstřihem</p>
+          <p class="product-price">550 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="
+              let size = this.parentElement.querySelector('.size-select').value;
+              if (size) {
+                  addToCart({
+                      id: 1,
+                      name: 'Základní bílé tričko',
+                      price: 550,
+                      size: size,
+                      image: 'images/tshirt1.jpg'
+                  });
+              } else {
+                  showTempMessage('Vyberte prosím velikost');
+              }
+          ">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      <!-- Product 2 -->
+      <div class="product-card" data-id="2">
+        <div class="product-image">
+          <img src="images/tshirt2.jpg" alt="Prémiové černé tričko">
+        </div>
+        <div class="product-info">
+          <h3 class="product-name">Prémiové černé tričko</h3>
+          <p class="product-desc">Vysoce kvalitní tričko z organické bavlny s elegantním vzhledem</p>
+          <p class="product-price">550 Kč</p>
+          <select class="size-select">
+            <option value="">Vyberte velikost</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <button class="product-button" onclick="addToCart({
+            id: 2,
+            name: 'Prémiové černé tričko',
+            price: 550,
+            size: this.parentElement.querySelector('.size-select').value,
+            image: 'images/tshirt2.jpg'
+          })">Přidat do košíku</button>
+        </div>
+      </div>
+      
+      </div>
+    </section>
+  </main>
+ <!-- Product Modal -->
+ <div id="productModal" class="product-modal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-gallery">
+      <img src="" alt="" id="modalImage" style="width: 100%;">
+      <div class="modal-thumbnails"></div>
+    </div>
+    <div class="modal-info">
+      <h2 id="modalTitle"></h2>
+      <p id="modalDescription"></p>
+      <p class="price" id="modalPrice"></p>
+      <div class="size-selector">
+        <h3>Velikost:</h3>
+        <div class="size-options" id="sizeOptions"></div>
+      </div>
+      <button class="btn" onclick="addToCartFromModal()">Přidat do košíku</button>
+    </div>
+  </div>
+</div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2025 Ink Fusion. Všechna práva vyhrazena.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="menu.js"></script>
+  <script src="products.js"></script>
+  <script src="modal.js"></script>
+</body>
+</html>
